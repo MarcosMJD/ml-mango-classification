@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  tf-serving:
+    image: tf-serving-mango:v1
+    ports:
+      - "8500:8500"
+    
+  gateway:
+    image: gateway-mango:v1
+    environment:
+      - TF_SERVING_HOST=tf-serving:8500
+    ports:
+      - "9000:9000"

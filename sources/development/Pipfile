@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "==1.5.2"
+numpy = "==1.23.5"
+tensorflow = "==2.10.0"
+scikit-learn = "==1.1.3"
+
+[dev-packages]
+jupyter = "*"
+matplotlib = "*"
+
+[requires]
+python_version = "3.9"
