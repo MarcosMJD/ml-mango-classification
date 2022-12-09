@@ -1,6 +1,14 @@
 # ml-mango-classification
-Machine Learning Model for Mango Varieties Classification
+Developing and productization of a Machine Learning model for Mango Varieties Classification
 
+## Technologies
+Tensorflow / Tensorflow Lite
+Keras
+Kubernetes / Kind
+Flask
+Streamlit
+AWS EKS
+Docker / docker-compose
 
 ## Plan 
 - Setup environment
