@@ -5,21 +5,32 @@ Machine Learning Model for Mango Varieties Classification
 ## Plan 
 - Setup environment
 - Download Dataset
-- Visualize images
-- Prepare dataset: train-val-test split
-- Create model Xception (imagenet coefs)
-		- Select learning rate
-		- Add checkpoints
-		- Perform data augmentation
-		- Find best head.
-  - EfficientNetB2
-- Hyperparameter tunning
-- Final model trainning
+- Development
+  - Visualize images
+  - Prepare dataset: train-val-test split
+  - Create model Xception (imagenet coefs)
+	- Add checkpoints
+	- Select learning rate
+	- Add inner layers
+	- Add dropout regularization
+	- Perform data augmentation
+	- Train with larget files (299x299)
+  - Final model trainning script
+  - Model conversion to tf_lite
 - Deployment
-  - Kubernetes (kind and EKS)
-    - Preprocessing service
-    - Prediction service
-- Create Streamlit app
+  - Create tf-serving image
+  - Create gateway (flask) image
+  - Create tests for testing the images (with docker-compose)
+  - Create Kubernetes yaml files (kind and EKS)
+    - gateway service and deployment
+    - tf-serving service and deployment
+  - Create Streamlit app
+
+Todo:
+	- Deploy on AWS EKS
+	- Use Fast API instead of flask
+  - Add L1 and L2 regularization in inner layers
+  - Try EfficientNetB2
 
 ## Setup
 
