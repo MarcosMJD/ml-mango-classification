@@ -58,23 +58,24 @@ app = FastAPI()
 
 # @app.route('/predict', methods=['POST'])
 @app.post('/predict')
-async def predict_endpoint(file: UploadFile = File(...)):
-    print(file, flush=True)
-    image_bytes = await file.read()
-    print(image_bytes, flush=True)
-    img = Image.open(BytesIO(image_bytes))
+# Note File() is a function that returns the class
+async def predict_endpoint(mango: UploadFile = File()):
+    print(mango, flush=True)
+    img = Image.open(mango.file)
     result = predict(preprocessor, img, CLASSES)
     print(result, flush=True)
-    return json.dumps(result)
+    return result
     """
+        Flask version: 
         def predict_endpoint():
-        image_stream = request.files.get('mango', '')
-        print(image_stream, flush=True)
-        img = Image.open(image_stream)
-        result = predict(preprocessor, img, CLASSES)
-        print(result, flush=True)
-        return jsonify(result)
+            image_stream = request.files.get('mango', '')
+            print(image_stream, flush=True)
+            img = Image.open(image_stream)
+            result = predict(preprocessor, img, CLASSES)
+            print(result, flush=True)
+            return jsonify(result)
     """
 
 if __name__ == '__main__':
+    # To Run Flask from cmd line 
     app.run(debug=True, host='0.0.0.0', port=9000)

@@ -29,10 +29,8 @@ def create_samples (data_path: str) -> list:
 
 def predict(api_uri, sample_image, sample_class):
 
-    #files = {'mango': open(sample_image, 'rb')}
-    #response = requests.post(url=api_uri, files=files)
-    file = open(sample_image, 'rb')
-    response = requests.post(url=api_uri, data={'filename': file , "msg":"hello" ,"type" : "multipart/form-data"}, files = { "file" : file  } )
+    files = {'mango': open(sample_image, 'rb')}
+    response = requests.post(url=api_uri, files=files)
     predictions = response.json()
     prediction = max(predictions, key=predictions.get)
     st.markdown(f"Prediction = {prediction}")
@@ -46,7 +44,7 @@ def predict(api_uri, sample_image, sample_class):
 
 def render(api_gateway_base_url, data_path):
 
-    st.title('Mango game')
+    st.title('Mango gamett')
 
     api_gateway_base_uri = f"{api_gateway_base_url}/predict"
    
@@ -93,6 +91,6 @@ def render(api_gateway_base_url, data_path):
 
 if __name__ == "__main__":
 
-    api_gateway_base_url = os.getenv("API_GATEWAY_BASE_URL", "http://localhost:9000")
+    api_gateway_base_url = os.getenv("API_GATEWAY_BASE_URL", "http://localhost:8080")
 
     render(api_gateway_base_url, DATA_PATH)

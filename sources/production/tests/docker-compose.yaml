@@ -10,4 +10,4 @@ services:
     environment:
       - TF_SERVING_HOST=tf-serving:8500
     ports:
-      - "9000:9000"
+      - "8080:8080"

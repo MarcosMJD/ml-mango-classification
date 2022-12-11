@@ -41,18 +41,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
     image_bytes = await file.read()
     print(image_bytes, flush=True)
     img = Image.open(BytesIO(image_bytes))
-    
     print(img, flush=True)
     return "ok"
-    """
-        def predict_endpoint():
-        image_stream = request.files.get('mango', '')
-        print(image_stream, flush=True)
-        img = Image.open(image_stream)
-        result = predict(preprocessor, img, CLASSES)
-        print(result, flush=True)
-        return jsonify(result)
-    """
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=9000)
+

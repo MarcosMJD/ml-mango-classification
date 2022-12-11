@@ -1,14 +1,14 @@
-# ml-mango-classification
-Developing and productization of a Machine Learning model for Mango Varieties Classification
+# ML for classification of mango varieties
+Developing and productization of a Machine Learning model for Classification of Mango Varieties
 
 ## Technologies
-Tensorflow / Tensorflow Lite
-Keras
-Kubernetes / Kind
-Flask and FastAPI
-Streamlit
-AWS EKS
-Docker / docker-compose
+Tensorflow / Tensorflow Lite  
+Keras  
+Kubernetes / Kind  
+Flask and FastAPI  
+Streamlit  
+AWS EKS  
+Docker / docker-compose  
 
 ## Plan 
 - Setup environment
@@ -36,7 +36,9 @@ Docker / docker-compose
 
 Todo:
 	- Deploy on AWS EKS
-	- Use Fast API instead of flask
+	- FastAPI
+  	- Make unit test with TestClient Class.
+  	- Check recommendations for deployment in containers
   - Add L1 and L2 regularization in inner layers
   - Try EfficientNetB2
 
@@ -269,5 +271,14 @@ git rm --cached <file>
 ENTRYPOINT [ "gunicorn", "gateway:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker",   "--bind=0.0.0.0:9000"]
 ```
 
-**Run uvicorn for testing FastAPI**
-`uvicorn gateway_template:app --reload`
+**Run uvicorn for testing FastAPI**  
+`uvicorn gateway_template:app --reload`  
+`uvicorn gateway:app --reload --host 127.0.0.1 --port 8080`    
+On Windows 0.0.0.0 will launch the server, but clients using 0.0.0.0 or 127.0.0.1 or localhost will not work.  
+On Windows, port 9000 is denied (permissions).  
+
+**Send image with curl in multipart form data format**
+ `curl -X 'POST'   'http://localhost:8000/predict'   -H 'accept: application/json'   -H 'Content-Type: multipart/form-data'   -F 'file=@IMG_20210630_102920.jpg;type=image/jpeg'`
+
+**Get the key with the max value in a dict**
+`print(max(x, key=x.get))`

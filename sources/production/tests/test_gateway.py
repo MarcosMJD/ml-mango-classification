@@ -1,6 +1,6 @@
 import requests
 
-GATEWAY = 'http://localhost:9000/predict'
+GATEWAY = 'http://localhost:8080/predict'
 
 TEST_IMAGE = 'IMG_20210630_102920.jpg'
 

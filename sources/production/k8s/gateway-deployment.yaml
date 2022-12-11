@@ -20,7 +20,7 @@ spec:
             memory: "256Mi"
             cpu: "1"
         ports:
-        - containerPort: 9000
+        - containerPort: 8080
         env:
           - name: TF_SERVING_HOST
             value: tf-serving.default.svc.cluster.local:8500
