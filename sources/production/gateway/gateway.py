@@ -2,10 +2,14 @@ import grpc
 from keras_image_helper import create_preprocessor
 from tensorflow_serving.apis import predict_pb2
 from tensorflow_serving.apis import prediction_service_pb2_grpc
-from flask import Flask, request, jsonify
+from io import BytesIO
+# from flask import Flask, request, jsonify
 from proto import np_to_protobuf
 from PIL import Image
 import os
+import json
+
+from fastapi import FastAPI, File, UploadFile
 
 ML_SERVER_HOST = os.getenv('TF_SERVING_HOST','localhost:8500')
 TARGET_SIZE = (299,299)
@@ -49,16 +53,28 @@ def predict(preprocessor, img, classes):
     response = prepare_response(pb_response, classes)
     return response
 
-app = Flask('gateway')
+# app = Flask('gateway')
+app = FastAPI()
 
-@app.route('/predict', methods=['POST'])
-def predict_endpoint():
-    image_stream = request.files.get('mango', '')
-    print(image_stream, flush=True)
-    img = Image.open(image_stream)
+# @app.route('/predict', methods=['POST'])
+@app.post('/predict')
+async def predict_endpoint(file: UploadFile = File(...)):
+    print(file, flush=True)
+    image_bytes = await file.read()
+    print(image_bytes, flush=True)
+    img = Image.open(BytesIO(image_bytes))
     result = predict(preprocessor, img, CLASSES)
-    print(result)
-    return jsonify(result)
+    print(result, flush=True)
+    return json.dumps(result)
+    """
+        def predict_endpoint():
+        image_stream = request.files.get('mango', '')
+        print(image_stream, flush=True)
+        img = Image.open(image_stream)
+        result = predict(preprocessor, img, CLASSES)
+        print(result, flush=True)
+        return jsonify(result)
+    """
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=9000)

@@ -29,8 +29,10 @@ def create_samples (data_path: str) -> list:
 
 def predict(api_uri, sample_image, sample_class):
 
-    files = {'mango': open(sample_image, 'rb')}
-    response = requests.post(url=api_uri, files=files)
+    #files = {'mango': open(sample_image, 'rb')}
+    #response = requests.post(url=api_uri, files=files)
+    file = open(sample_image, 'rb')
+    response = requests.post(url=api_uri, data={'filename': file , "msg":"hello" ,"type" : "multipart/form-data"}, files = { "file" : file  } )
     predictions = response.json()
     prediction = max(predictions, key=predictions.get)
     st.markdown(f"Prediction = {prediction}")

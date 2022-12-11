@@ -5,7 +5,7 @@ Developing and productization of a Machine Learning model for Mango Varieties Cl
 Tensorflow / Tensorflow Lite
 Keras
 Kubernetes / Kind
-Flask
+Flask and FastAPI
 Streamlit
 AWS EKS
 Docker / docker-compose
@@ -260,3 +260,14 @@ git reset --hard <commit-id>
 git reset --soft HEAD~1
 (the files will be in the staged area where they can be removed or unstaged)
 git rm --cached <file>
+
+**Install Gunicorn and Uvicorn for multiprocess with FastAPI**
+`pip install "uvicorn[standard]" gunicorn`
+
+**Run Gunicorn within a docker container with several Uvicorn workers (Linux only)**
+```
+ENTRYPOINT [ "gunicorn", "gateway:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker",   "--bind=0.0.0.0:9000"]
+```
+
+**Run uvicorn for testing FastAPI**
+`uvicorn gateway_template:app --reload`
