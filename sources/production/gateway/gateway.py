@@ -9,7 +9,8 @@ from PIL import Image
 import os
 import json
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from pydantic import BaseModel, Field
 
 ML_SERVER_HOST = os.getenv('TF_SERVING_HOST','localhost:8500')
 TARGET_SIZE = (299,299)
@@ -23,6 +24,19 @@ CLASSES =  [
     'Langra',
     'Sindhri'
 ]
+
+
+class Predictions(BaseModel):
+
+    AnwarRatool: float = Field(0, ge=0, le=1, alias='Anwar Ratool')
+    ChaunsaBlack: float = Field(0, ge=0, le=1, alias='Chaunsa (Black)')
+    ChaunsaSummerBahisht: float = Field(0, ge=0, le=1, alias='Chaunsa (Summer Bahisht)')
+    ChaunsaWhite: float = Field(0, ge=0, le=1, alias='Chaunsa (White)')
+    Dosehri: float = Field(0, ge=0, le=1)
+    Fajri: float = Field(0, ge=0, le=1)
+    Langra: float = Field(0, ge=0, le=1)
+    Sindhri: float = Field(0, ge=0, le=1)
+
 
 channel = grpc.insecure_channel(ML_SERVER_HOST)
 stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
@@ -57,24 +71,39 @@ def predict(preprocessor, img, classes):
 app = FastAPI()
 
 # @app.route('/predict', methods=['POST'])
-@app.post('/predict')
+@app.post('/predict', response_model=Predictions)
 # Note File() is a function that returns the class
 async def predict_endpoint(mango: UploadFile = File()):
     print(mango, flush=True)
-    img = Image.open(mango.file)
-    result = predict(preprocessor, img, CLASSES)
-    print(result, flush=True)
-    return result
-    """
-        Flask version: 
-        def predict_endpoint():
-            image_stream = request.files.get('mango', '')
-            print(image_stream, flush=True)
-            img = Image.open(image_stream)
+    
+    try:
+        img = Image.open(mango.file)
+    except:
+        raise HTTPException(
+            status_code=400,
+            detail="Unsupported type of image. Use jpg or png"
+        )
+    else:
+        try:
             result = predict(preprocessor, img, CLASSES)
+        except:
+            raise HTTPException(
+                status_code=404, 
+                detail="Service unavailable, try again later"
+            )
+        else:
             print(result, flush=True)
-            return jsonify(result)
-    """
+            return result
+            """
+                Flask version: 
+                def predict_endpoint():
+                    image_stream = request.files.get('mango', '')
+                    print(image_stream, flush=True)
+                    img = Image.open(image_stream)
+                    result = predict(preprocessor, img, CLASSES)
+                    print(result, flush=True)
+                    return jsonify(result)
+            """
 
 if __name__ == '__main__':
     # To Run Flask from cmd line 

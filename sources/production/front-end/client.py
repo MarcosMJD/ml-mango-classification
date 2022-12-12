@@ -44,7 +44,7 @@ def predict(api_uri, sample_image, sample_class):
 
 def render(api_gateway_base_url, data_path):
 
-    st.title('Mango gamett')
+    st.title('Mango game')
 
     api_gateway_base_uri = f"{api_gateway_base_url}/predict"
    

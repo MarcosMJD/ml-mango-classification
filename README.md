@@ -34,13 +34,13 @@ Docker / docker-compose
     - tf-serving service and deployment
   - Create Streamlit app
 
-Todo:
-	- Deploy on AWS EKS
-	- FastAPI
-  	- Make unit test with TestClient Class.
-  	- Check recommendations for deployment in containers
-  - Add L1 and L2 regularization in inner layers
-  - Try EfficientNetB2
+Todo:  
+- Deploy on AWS EKS  
+- FastAPI  
+  - Make unit test with TestClient Class.  
+  - Check recommendations for deployment in containers.   
+- Add L1 and L2 regularization in inner layers
+- Try EfficientNetB2
 
 ## Setup
 

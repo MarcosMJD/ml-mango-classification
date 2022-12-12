@@ -12,6 +12,8 @@ class Item_post(BaseModel):
     param_3: Union[float,None] = None
     param_3: Union[List[str],None] = None
 
+# Note: Optional[float] = Union[float,None]
+
 app = FastAPI()
 
 @app.get('/endpoint_get/{path}')
