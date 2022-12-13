@@ -33,14 +33,23 @@ def predict(api_uri, sample_image, sample_class):
     response = requests.post(url=api_uri, files=files)
     predictions = response.json()
     prediction = max(predictions, key=predictions.get)
-    st.markdown(f"Prediction = {prediction}")
-    st.markdown(f"Actual = {sample_class}")
+    results = f"Prediction = {prediction}\n"
+    results += f"Actual = {sample_class}\n"
+    user_class = st.session_state.user_class
+    results += f"Your choice: {user_class}\n"
+    winner = ''
     if prediction != sample_class: 
-        st.subheader("Fail!")
+        winner += "IA was wrong "
     else:
-        st.subheader('IA was right!')
-    st.markdown(f"Detailed predictions: {predictions} ")
-
+        winner += "IA was right "
+    if prediction != user_class: 
+        winner += "you were wrong"
+    else:
+        winner += "you were right"
+    results += f'{winner}\n'
+    results += f"Detailed predictions: {predictions}\n"
+    st.session_state.results = results
+    
 
 def render(api_gateway_base_url, data_path):
 
@@ -63,12 +72,15 @@ def render(api_gateway_base_url, data_path):
     st.markdown("Random sample image")
     st.image(sample_image, width=300)
 
-    user_class = st.selectbox(
+    st.selectbox(
         'Which is the variety of this mango?',
         index=0,
         options = ['make your choice'] + classes,
         on_change = predict,
-        args=(api_uri, sample_image, sample_class))
+        args=(api_uri, sample_image, sample_class),
+        key="user_class")
+    
+    st.text_area("Results", key='results', height = 200)
 
     st.markdown("For your reference, these are samples from each class")    
     class_samples = [
@@ -82,7 +94,7 @@ def render(api_gateway_base_url, data_path):
         './data/Classification_dataset/Sindhri/IMG_20210702_182507 - Copy.jpg'
     ]
 
-    st.image(class_samples, width=150, caption=classes)
+    st.image(class_samples, width=250, caption=classes)
 
 
 
