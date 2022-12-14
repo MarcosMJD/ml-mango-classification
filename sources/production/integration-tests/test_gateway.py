@@ -2,11 +2,12 @@ import requests
 
 GATEWAY = 'http://localhost:8080/predict'
 
-TEST_IMAGE = 'IMG_20210630_102920.jpg'
+IMAGE_NAME = "IMG_20210630_102920.jpg"
+IMAGE_PATH = "./test_data" + IMAGE_NAME
 
 if __name__ == '__main__':
     
-    files = {'mango': open(TEST_IMAGE, 'rb')}
+    files = {'file': open(IMAGE_PATH, 'rb')}
     result = requests.post(GATEWAY, files=files)
     result = result.json()
 

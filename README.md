@@ -34,6 +34,7 @@ Docker / docker-compose
     - tf-serving service and deployment
   - Create Streamlit app
 
+
 Todo:  
 - Deploy on AWS EKS  
 - FastAPI  
@@ -41,6 +42,13 @@ Todo:
   - Check recommendations for deployment in containers.   
 - Add L1 and L2 regularization in inner layers
 - Try EfficientNetB2
+- Find solution to use grpc with asyc/await (FastAPI) 
+  - https://docs.python.org/3/library/asyncio-future.html
+  - https://github.com/tensorflow/serving/blob/master/tensorflow_serving/example/mnist_client.py
+
+
+Bugs:
+- Check why pytest can non import modules in unit tests of gateway. Meantime, use python unit_tests.py
 
 ## Setup
 

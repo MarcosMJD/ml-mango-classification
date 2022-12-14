@@ -4,17 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-grpcio = "*"
 keras-image-helper = "*"
 tensorflow-protobuf = "==2.11.0"
 flask = "*"
 gunicorn = "*"
-fastapi = "*"
+fastapi = "==0.88.*"
 python-multipart = "*"
 uvicorn = {extras = ["standard"], version = "*"}
+grpcio = "*"
+pydantic = ">=1.2.0,<2.0.0"
 
 [dev-packages]
 requests = "*"
+httpx = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.9"

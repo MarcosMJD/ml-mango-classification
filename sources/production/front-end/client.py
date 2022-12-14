@@ -1,6 +1,6 @@
 # Streamlit app that shows a set o sample images
 # Chooses a random image from another set of images
-# Let the user to predict the variety
+# Asks the user to predict the variety
 # Predicts the variety
 # Shows the winner
 
@@ -29,7 +29,7 @@ def create_samples (data_path: str) -> list:
 
 def predict(api_uri, sample_image, sample_class):
 
-    files = {'mango': open(sample_image, 'rb')}
+    files = {'file': open(sample_image, 'rb')}
     response = requests.post(url=api_uri, files=files)
     predictions = response.json()
     prediction = max(predictions, key=predictions.get)
@@ -95,10 +95,6 @@ def render(api_gateway_base_url, data_path):
     ]
 
     st.image(class_samples, width=250, caption=classes)
-
-
-
-
 
 
 if __name__ == "__main__":

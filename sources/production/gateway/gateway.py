@@ -7,9 +7,9 @@ from io import BytesIO
 from proto import np_to_protobuf
 from PIL import Image
 import os
-import json
 
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Request
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
 ML_SERVER_HOST = os.getenv('TF_SERVING_HOST','localhost:8500')
@@ -24,7 +24,6 @@ CLASSES =  [
     'Langra',
     'Sindhri'
 ]
-
 
 class Predictions(BaseModel):
 
@@ -70,17 +69,29 @@ def predict(preprocessor, img, classes):
 # app = Flask('gateway')
 app = FastAPI()
 
+@app.get('/', response_class=HTMLResponse)
+def index(request: Request) -> dict:
+
+    """
+    Response of the index page
+    :param request: request instance used to get the ip address of the host
+    :return: text directing users towards API documentation.
+    """
+    # request.client.host returns 127.0.0.1. However, using html will make
+    # browser to automatically set 127.0.0.1:8000. So no need for using request
+    return '<a href="/docs">Click here to access API</a>'
+
+
 # @app.route('/predict', methods=['POST'])
 @app.post('/predict', response_model=Predictions)
 # Note File() is a function that returns the class
-async def predict_endpoint(mango: UploadFile = File()):
-    print(mango, flush=True)
-    
+async def predict_endpoint(file: UploadFile = File()):
+  
     try:
-        img = Image.open(mango.file)
+        img = Image.open(file.file)
     except:
         raise HTTPException(
-            status_code=400,
+            status_code=422,
             detail="Unsupported type of image. Use jpg or png"
         )
     else:
@@ -97,7 +108,7 @@ async def predict_endpoint(mango: UploadFile = File()):
             """
                 Flask version: 
                 def predict_endpoint():
-                    image_stream = request.files.get('mango', '')
+                    image_stream = request.files.get('file', '')
                     print(image_stream, flush=True)
                     img = Image.open(image_stream)
                     result = predict(preprocessor, img, CLASSES)
