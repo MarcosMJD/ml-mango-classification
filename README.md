@@ -70,38 +70,37 @@ This project uses cuda toolkit v11.8.0 and cuDNN v8.6.0.
 
 Update nvidia drivers
 	https://www.nvidia.es/Download/index.aspx?lang=en
-Download and install CUDA Toolkit
+Download and install CUDA Toolkit  
 https://developer.nvidia.com/cuda-downloads?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exe_local
-https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_522.06_windows.exe
+Direct link to version 11.8.0:  
+https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_522.06_windows.exe  
 
-Download and install cuddn sdk (Deep Neural Network library (cuDNN)
-
+Download and install cuddn sdk (Deep Neural Network library (cuDNN):
 	
-	Download and extract the zlib package from ZLIB DLL
-	http://www.winimage.com/zLibDll/zlib123dllx64.zip
-	Note: If using Chrome, the file may not automatically download. If this happens, right-click the link and choose Save link as…. Then, paste the URL into a browser window.
-	Extract the library and add the directory path of the downloaded zlibwapi.dll to the environment variable PATH.
-	For instance, in any of the directories of cuDNN (see below).
+Download and extract the zlib package from ZLIB DLL
+http://www.winimage.com/zLibDll/zlib123dllx64.zip
+Note: If using Chrome, the file may not automatically download. If this happens, right-click the link and choose Save link as…. Then, paste the URL into a browser window.
+Extract the library and add the directory path of the downloaded zlibwapi.dll to the environment variable PATH.
+For instance, in any of the directories of cuDNN (see below).
 
-	Download cuDNN v8.6.0 (October 3rd, 2022), for CUDA 11.x
-	https://developer.nvidia.com/cudnn
-	https://developer.nvidia.com/compute/cudnn/secure/8.6.0/local_installers/11.8/cudnn-windows-x86_64-8.6.0.163_cuda11-archive.zip
-	
-	Unzip the cuDNN package. Cudnn-windows-x86_64-*-archive.zip
-	You must replace 8.x and 8.x.y.z with your specific cuDNN version
-	Copy the following files from the unzipped package into the NVIDIA cuDNN directory.
-		Copy bin\cudnn*.dll to C:\Program Files\NVIDIA\CUDNN\v8.x\bin.
-		Copy include\cudnn*.h to C:\Program Files\NVIDIA\CUDNN\v8.x\include.
-		Copy lib\cudnn*.lib to C:\Program Files\NVIDIA\CUDNN\v8.x\lib.
-	Add Path to PATH environment variables
-		Open a command prompt from the Start menu.
-		Type Run and hit Enter.
-		Issue the control sysdm.cpl command.
-		Select the Advanced tab at the top of the window.
-		Click Environment Variables at the bottom of the window.
-		Add the NVIDIA cuDNN bin directory path to the PATH variable:
-		Variable Name: PATH 
-		Value to Add: C:\Program Files\NVIDIA\CUDNN\v8.x\bin
+Download cuDNN v8.6.0 (October 3rd, 2022), for CUDA 11.x
+https://developer.nvidia.com/cudnn
+https://developer.nvidia.com/compute/cudnn/secure/8.6.0/local_installers/11.8/cudnn-windows-x86_64-8.6.0.163_cuda11-archive.zip
+
+Unzip the cuDNN package. Cudnn-windows-x86_64-*-archive.zip. You must replace 8.x and 8.x.y.z with your specific cuDNN version  
+Copy the following files from the unzipped package into the NVIDIA cuDNN directory:  
+- Copy bin\cudnn*.dll to C:\Program Files\NVIDIA\CUDNN\v8.x\bin.  
+- Copy include\cudnn*.h to C:\Program Files\NVIDIA\CUDNN\v8.x\include.  
+- Copy lib\cudnn*.lib to C:\Program Files\NVIDIA\CUDNN\v8.x\lib.  
+Add Path to PATH environment variables:   
+- Open a command prompt from the Start menu.  
+- Type Run and hit Enter.  
+- Issue the control sysdm.cpl command.  
+- Select the Advanced tab at the top of the window.  
+- Click Environment Variables at the bottom of the window.  
+- Add the NVIDIA cuDNN bin directory path to the PATH variable:  
+- Variable Name: PATH   
+- Value to Add: C:\Program Files\NVIDIA\CUDNN\v8.x\bin  
 
 ### Install Anaconda 
 
