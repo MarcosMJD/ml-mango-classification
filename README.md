@@ -216,6 +216,14 @@ Ensure that the production environment is activated (the one under the productio
 Go to `production/tests/` folder and run  
 `python test_gateway.py`  
 
+## Performance tests
+
+For some reason, I have not been able to run Locust within the virtual environment made by pipenv.
+I've had to install Locust on the Anaconda environment and launch Locust from Anaconda environment (that is, not from the pipenv environment)
+So if needed, use `pip install locust` in your conda environment (you may have already created one for this project)
+Go to `sources/production/integration_tests/` and execute `locust -H http://localhost:8080`
+Be sure to have a local ML server running, whether docker-compose of with kind as explained before.
+Then, go to `http://localhost/8089` and enter 4 users. 
 
 ## Useful snippets
 
