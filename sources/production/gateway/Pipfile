@@ -18,6 +18,7 @@ pydantic = ">=1.2.0,<2.0.0"
 requests = "*"
 httpx = "*"
 pytest = "*"
+locust = "*"
 
 [requires]
 python_version = "3.9"

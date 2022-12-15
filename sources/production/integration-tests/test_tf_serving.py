@@ -8,7 +8,7 @@ import os
 
 ML_SERVER_HOST = os.getenv('TF_SERVING_HOST','localhost:8500')
 IMAGE_NAME = "IMG_20210630_102920.jpg"
-IMAGE_PATH = "./test_data" + IMAGE_NAME
+IMAGE_PATH = "./test_data/" + IMAGE_NAME
 TARGET_SIZE = (299,299)
 
 CLASSES =  [

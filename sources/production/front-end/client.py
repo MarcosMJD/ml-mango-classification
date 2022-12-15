@@ -12,6 +12,11 @@ import random
 DATA_PATH = "./data/Classification_dataset/"
 SAMPLE_IMAGE = DATA_PATH + "Anwar Ratool/" + "IMG_20210630_102920.jpg"
 
+if not 'score_ai' in st.session_state:
+    st.session_state['score_ai'] = 0
+if not 'score_human' in st.session_state:
+    st.session_state['score_human'] = 0
+
 def create_samples (data_path: str) -> list:
 
     classes = [subdir.name for subdir in os.scandir(data_path) if subdir.is_dir()]
@@ -29,26 +34,31 @@ def create_samples (data_path: str) -> list:
 
 def predict(api_uri, sample_image, sample_class):
 
-    files = {'file': open(sample_image, 'rb')}
-    response = requests.post(url=api_uri, files=files)
-    predictions = response.json()
-    prediction = max(predictions, key=predictions.get)
-    results = f"Prediction = {prediction}\n"
-    results += f"Actual = {sample_class}\n"
-    user_class = st.session_state.user_class
-    results += f"Your choice: {user_class}\n"
-    winner = ''
-    if prediction != sample_class: 
-        winner += "IA was wrong "
-    else:
-        winner += "IA was right "
-    if prediction != user_class: 
-        winner += "you were wrong"
-    else:
-        winner += "you were right"
-    results += f'{winner}\n'
-    results += f"Detailed predictions: {predictions}\n"
-    st.session_state.results = results
+    with open(sample_image, 'rb') as file:
+        files = {'file': file}
+        response = requests.post(url=api_uri, files=files)
+        predictions = response.json()
+        prediction = max(predictions, key=predictions.get)
+        results = f"Prediction = {prediction}\n"
+        results += f"Actual = {sample_class}\n"
+        user_class = st.session_state.user_class
+        results += f"Your choice: {user_class}\n"
+        winner = ''
+        if prediction != sample_class: 
+            winner += "IA was wrong "
+        else:
+            winner += "IA was right "
+            st.session_state['score_ai']+=1
+        if prediction != user_class: 
+            winner += "you were wrong"
+        else:
+            winner += "you were right"
+            st.session_state['score_ai']+=1
+        results += f'{winner}\n'
+        results += f"Overall result AI {st.session_state['score_ai']} - You {st.session_state['score_human']}\n"
+        results += f'{type(st.session_state)}'
+        results += f"Detailed predictions: {predictions}\n"
+        st.session_state.results = results
     
 
 def render(api_gateway_base_url, data_path):

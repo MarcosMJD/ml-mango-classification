@@ -2,13 +2,13 @@
 Developing and productization of a Machine Learning model for Classification of Mango Varieties
 
 ## Technologies
-Tensorflow / Tensorflow Lite  
-Keras  
-Kubernetes / Kind  
-Flask and FastAPI  
-Streamlit  
-AWS EKS  
-Docker / docker-compose  
+- Tensorflow / Tensorflow Lite  
+- Keras  
+- Flask and FastAPI  
+- Streamlit  
+- Kubernetes / Kind  
+- Docker / docker-compose  
+- AWS EKS  
 
 ## Plan 
 - Setup environment
@@ -35,19 +35,20 @@ Docker / docker-compose
   - Create Streamlit app
 
 
-Todo:  
+### Todo:  
+- Documentation (code and readme)
 - Deploy on AWS EKS  
 - FastAPI  
-  - Make unit test with TestClient Class.  
   - Check recommendations for deployment in containers.   
 - Add L1 and L2 regularization in inner layers
 - Try EfficientNetB2
-- Find solution to use grpc with asyc/await (FastAPI) 
+- Find solution to use grpc with asyc/await (FastAPI)  
   - https://docs.python.org/3/library/asyncio-future.html
   - https://github.com/tensorflow/serving/blob/master/tensorflow_serving/example/mnist_client.py
+- Add simple makefile
 
 
-Bugs:
+### Bugs:
 - Check why pytest can non import modules in unit tests of gateway. Meantime, use python unit_tests.py
 
 ## Setup
@@ -290,3 +291,23 @@ On Windows, port 9000 is denied (permissions).
 
 **Get the key with the max value in a dict**
 `print(max(x, key=x.get))`
+
+**Example of simple makefile**
+```
+deps:
+	poetry install
+
+dev: deps
+	cd app && poetry run python main.py
+
+lint: lint-black lint-flake lint-pycodestyle
+
+lint-black:
+	poetry run black --line-length 100 app
+
+lint-flake:
+	poetry run flake8 --max-line-length 100 app
+
+lint-pycodestyle:
+	poetry run pycodestyle --max-line-length 100 ./app
+```
