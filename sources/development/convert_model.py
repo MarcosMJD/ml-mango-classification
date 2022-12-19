@@ -1,11 +1,11 @@
 import tensorflow as tf
 from tensorflow import keras
 import sys
+from argparse import ArgumentParser
 
 MODEL_PATH = "./models/best-model-v4.37_0.981.h5"
 OUTPUT_FOLDER = "../production/tf-serving/"
 MODEL_NAME = "mango-model"
-OUTPUT_MODEL_PATH = OUTPUT_FOLDER + MODEL_NAME
 
 def convert_model(model_path, output_model_path):
     model = keras.models.load_model(model_path)
@@ -13,7 +13,21 @@ def convert_model(model_path, output_model_path):
 
 if __name__ == '__main__':
 
-    model_path = sys.argv[1] if len(sys.argv) > 1 else MODEL_PATH
-    output_model_path = sys.argv[2] if len(sys.argv) > 2 else OUTPUT_MODEL_PATH
+    parser = ArgumentParser()
+
+    parser.add_argument(
+        '--modelpath',
+        default=MODEL_PATH,
+        help='Path of the model to convert, including its name. e.j. "./models/model.tf5"')
+    
+    parser.add_argument(
+        '--outputdir',
+        default=OUTPUT_FOLDER,
+        help='Directory where to save the model. E.g. "../my-model/')
+
+    args = parser.parse_args()
+
+    model_path = args.modelpath
+    output_model_path = args.outputdir + MODEL_NAME
     convert_model(model_path, output_model_path)
   

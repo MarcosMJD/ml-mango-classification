@@ -1,8 +1,8 @@
-# Streamlit app that shows a set o sample images
-# Chooses a random image from another set of images
+# Streamlit app that shows a set of sample images
+# Chooses a random image 
 # Asks the user to predict the variety
 # Predicts the variety
-# Shows the winner
+# Shows the winner and overall result
 
 import streamlit as st
 import requests
@@ -53,10 +53,9 @@ def predict(api_uri, sample_image, sample_class):
             winner += "you were wrong"
         else:
             winner += "you were right"
-            st.session_state['score_ai']+=1
+            st.session_state['score_human']+=1
         results += f'{winner}\n'
         results += f"Overall result AI {st.session_state['score_ai']} - You {st.session_state['score_human']}\n"
-        results += f'{type(st.session_state)}'
         results += f"Detailed predictions: {predictions}\n"
         st.session_state.results = results
     

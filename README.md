@@ -1,19 +1,33 @@
 # ML for classification of mango varieties
-Developing and productization of a Machine Learning model for Classification of Mango Varieties
+Developing and productization of a Machine Learning model for Classification of Mango Varieties.  
+Gamification with client app that challenges the user to compete against the IA.   
 
-## Technologies
+### Dataset description
+https://www.kaggle.com/datasets/saurabhshahane/mango-varieties-classification  
+
+This dataset contains images of eight varieties of Pakistani mangoes. Automated classification and grading of harvested mangoes will facilitate farmers in delivering high-quality mangoes on time for export, and a high accuracy may be achieved using Convolutional Neural Network.
+
+### Technologies
+- Python
 - Tensorflow / Tensorflow Lite  
 - Keras  
+- Models: Xception, EfficientNetB2
+- Numpy, Pandas, MatplotLib
 - Flask and FastAPI  
 - Streamlit  
-- Kubernetes / Kind  
 - Docker / docker-compose  
+- Kubernetes / Kind  
 - AWS EKS  
+- Locust  
+- Pytest  
+<video width="640" height="480" controls>
+  <source src="./assets/demo.webm" type="video/webm">
+</video>  
 
-## Plan 
+### Development Plan: 
 - Setup environment
 - Download Dataset
-- Development
+- Development -> notebook.ipynb, train.py, convert_model.py
   - Visualize images
   - Prepare dataset: train-val-test split
   - Create model Xception (imagenet coefs)
@@ -23,9 +37,11 @@ Developing and productization of a Machine Learning model for Classification of 
 	- Add dropout regularization
 	- Perform data augmentation
 	- Train with larget files (299x299)
-  - Final model trainning script
+	- Test the model with test set
+	- Train efficient-net-b2 for comparison
+  - Final model trainning script using the full_train and test datasets
   - Model conversion to tf_lite
-- Deployment
+- Productization -> ./production/*
   - Create tf-serving image
   - Create gateway (flask) image
   - Create tests for testing the images (with docker-compose)
@@ -33,82 +49,40 @@ Developing and productization of a Machine Learning model for Classification of 
     - gateway service and deployment
     - tf-serving service and deployment
   - Create Streamlit app
+  - Performance test with Locuts
+- Documentation
 
-
-### Todo:  
-- Documentation (code and readme)
-- Deploy on AWS EKS  
-- FastAPI  
-  - Check recommendations for deployment in containers.   
-- Add L1 and L2 regularization in inner layers
-- Try EfficientNetB2
-- Find solution to use grpc with asyc/await (FastAPI)  
-  - https://docs.python.org/3/library/asyncio-future.html
-  - https://github.com/tensorflow/serving/blob/master/tensorflow_serving/example/mnist_client.py
-- Add simple makefile
-
+### Todo: 
+- Documentation (code)  
+- Development:  
+  - Add L1 and L2 regularization in inner layers  
+  - Test with 80-10-10 folds.  
+- Production:
+  - FastAPI  
+  - Find solution to use grpc with asyc/await (FastAPI)  
+    - https://docs.python.org/3/library/asyncio-future.html  
+    - https://github.com/tensorflow/serving/blob/master/tensorflow_serving/example/mnist_client.py  
+  - Add simple makefile  
 
 ### Bugs:
-- Check why pytest can non import modules in unit tests of gateway. Meantime, use python unit_tests.py
+- Check why pytest can non import modules in unit tests of gateway. Meantime, use `python unit_tests.py`  
 
 ## Setup
 
-These are the tools used in this project.
-
-- Anaconda: this is the default ML framework, although in this particular project, it is only used to get the python interpreter.  
-- Visual Studio Code.  
-- Windows 10.  
-- git and GitBash. Git for Windows includes GitBash.  
-
-You can use your own OS and python version manager. It is required python=3.9
- 
-### Install CUDA
-
-These are the instructions to install CUDA on Windows. In the links listed, there are also instructions for other OS.
-This should also work with WSL2.
-This project uses cuda toolkit v11.8.0 and cuDNN v8.6.0.  
-
-Update nvidia drivers
-	https://www.nvidia.es/Download/index.aspx?lang=en
-Download and install CUDA Toolkit  
-https://developer.nvidia.com/cuda-downloads?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exe_local
-Direct link to version 11.8.0:  
-https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_522.06_windows.exe  
-
-Download and install cuddn sdk (Deep Neural Network library (cuDNN):
-	
-Download and extract the zlib package from ZLIB DLL
-http://www.winimage.com/zLibDll/zlib123dllx64.zip
-Note: If using Chrome, the file may not automatically download. If this happens, right-click the link and choose Save link as…. Then, paste the URL into a browser window.
-Extract the library and add the directory path of the downloaded zlibwapi.dll to the environment variable PATH.
-For instance, in any of the directories of cuDNN (see below).
-
-Download cuDNN v8.6.0 (October 3rd, 2022), for CUDA 11.x
-https://developer.nvidia.com/cudnn
-https://developer.nvidia.com/compute/cudnn/secure/8.6.0/local_installers/11.8/cudnn-windows-x86_64-8.6.0.163_cuda11-archive.zip
-
-Unzip the cuDNN package. Cudnn-windows-x86_64-*-archive.zip. You must replace 8.x and 8.x.y.z with your specific cuDNN version  
-Copy the following files from the unzipped package into the NVIDIA cuDNN directory:  
-- Copy bin\cudnn*.dll to C:\Program Files\NVIDIA\CUDNN\v8.x\bin.  
-- Copy include\cudnn*.h to C:\Program Files\NVIDIA\CUDNN\v8.x\include.  
-- Copy lib\cudnn*.lib to C:\Program Files\NVIDIA\CUDNN\v8.x\lib.  
-Add Path to PATH environment variables:   
-- Open a command prompt from the Start menu.  
-- Type Run and hit Enter.  
-- Issue the control sysdm.cpl command.  
-- Select the Advanced tab at the top of the window.  
-- Click Environment Variables at the bottom of the window.  
-- Add the NVIDIA cuDNN bin directory path to the PATH variable:  
-- Variable Name: PATH   
-- Value to Add: C:\Program Files\NVIDIA\CUDNN\v8.x\bin  
-
-### Install Anaconda 
-
-Go to:
-https://www.anaconda.com/products/distribution and install Anaconda form Windows.
-
+Follow the instructions in [SETUP.md](./SETUP.md)  
 
 ### Clone the repo
+Open a shell (e.g. Powershell) and execute:  
+`git clone https://github.com/MarcosMJD/ml-mango-classification.git`
+
+### Download the dataset
+Go to https://www.kaggle.com/datasets/saurabhshahane/mango-varieties-classification  
+Create a Kaggle account and click Download button.  
+The zip file actually contains two datasets, each one in a subdirectories. We only need the Classification_dataset.  
+So unzip the folder `Classification_dataset` into the `data` folder of the repository. Like this:  
+/data/Classificacion_dataset/Anwar Ratool
+/data/Classificacion_dataset/Chanusa (Black)
+...
 
 ### Create the environment
 
@@ -130,12 +104,12 @@ Install pip and pipenv
 `pip install -U pip` alternatively `python.exe -m pip install -U pip`  
 `pip install pipenv`  
 
-To create the environment and install dependencies, go to the sources/development directory and execute:     
+To create the development environment and install dependencies, go to the sources/development directory and execute:     
 `pipenv install --dev`  
 Activate the environment  
 `pipenv shell`    
 
-Please, note that the production/gateway and production/fron-end have their specific environments to keep these environments separated from the development environment and from each other.  
+Please, note that the production/gateway and production/fron-end have their specific environments in order to keep these environments separated from the development environment and from each other.  
 
 To check the tensorflow version and GPU devices used (if any):
 `python`  
@@ -143,52 +117,87 @@ To check the tensorflow version and GPU devices used (if any):
 `tf.config.list_physical_devices('GPU')`  
 `[PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]`  
 
-## FAQ
-- ImageDataGEnerator name 'scipy' is not defined
-Check that scipy is installed in your environment.
-Restart jupyter kernel and try again.
+## 1.- Development:
 
-## How to run
+**jupyter notebook**  
+In a bash go to `/sources/development` and ensure that the development environment is active, then start jupyter notebook with:
+`jupyter notebook`  
 
-### Development:
-Launch the development environment as explained previously.  
-Run `jupyter notebook`...
-
-The models will be stored unthe the `./models` folder.  
-Checkpoints will be called when the model accuracy improves for each epoch.  
+Go the browser and open `notebook.ipynb`   
+Run all cells check the tranning of models and model evaluation.
+The models are saved under the `./models` directory by using checkpoints, which called when the model accuracy improves for each epoch.  
+ 
 Finally, the final model is trained with images of size of 299x299.   
 
-Check the best-model (named best-model.*.h5)  
-Convert the best model:  
-python convert_model.py ./models/best-model.36_0.975.h5
-The model will be converted into saved_model format under `production\tf-serving` directory.  
-
+The best model is selected and tested with the test dataset.
+Finally, the model is converted into saved_model format under `production\tf-serving` directory by calling the `convert_model.py` script.  
+ 
 Check the model:
 Go to `/sources/production/tf-serving/` and run
 `saved_model_cli show --dir mango-model --all`
 
-### Production:
+IMPORTANT NOTE:
+Before deploying the model, it is needed to set the correct input and outputs in the gateway. To do this:
+- Go to the directory `/sources/production/tf-serving`
+- Run `saved_model_cli  show --all --dir mango-model`
+- Find the line `signature_def['serving_default']:`
+- Take the name of the input. E.G. `input_44` in the `line inputs['input_44']`
+- the same for the output: `dense_37` in `outputs['dense_37']`
+Your numbers may be different.
 
-Build the images:
+Edit `/sources/production/gateway/gateway.py` and modify `input_xx` and `dense_xx` with your numbers
+
+**Train script**  
+The model with the best parameters will be trained by using the full_train dataset and checking its performance with the test_dataset.  
+Is a shell with the development environment activated, run:  
+`python train.py`  
+The best checkpoint is automatically selected and the model is converted into saved_model format under `production\tf-serving` directory by calling the `convert_model.py` script.  
+
+## 2.- Production:
+
+### Build the images:
 Go to /sources/production/tf-serving/ and run:  
 `docker build -t tf-serving-mango:v1 .`
 Go to /sources/production/gateway/ and run:  
 `docker build -t gateway-mango:v1 .`
 
-Test localy running services in docker containers:
+### Test localy running services in docker containers:
 
-Got to `sources/production/gateway` and activate the environment. If you were in the development environment, run `exit` prevously, since nested environments are not permitted.
-Go to `/sources/production/tests` and run:
-	docker-compose up
-	python test_tf_serving.py
-	python test_gateway.py
-	docker-compose down
-
+Go to `sources/production/gateway` and activate the environment with: 
+`pipenv install --dev`
+`pipenv shell`
+If you were in the development environment, run `exit` prevously, since nested environments are not permitted.
+Go to `/sources/production/integration-tests` and run:
+```
+docker-compose up
+python test_tf_serving.py
+python test_gateway.py
+CTRL+C
+docker-compose down
+```
 In both cases the results with the prediction for the sample image will be shown. Should be something similar to:  
 `{'Anwar Ratool': 1.0, 'Chaunsa (Black)': 0.0, 'Chaunsa (Summer Bahisht)': 0.0, 'Chaunsa (White)': 5.0123284672731474e-37, 'Dosehri': 0
 .0, 'Fajri': 2.4020681443702053e-25, 'Langra': 8.949817257817495e-34, 'Sindhri': 5.200761237684644e-35}`  
 
-	
+### Test locally with Streamlit app "Mango game" 
+
+The application 'Mango game' is a Streamlit app that
+- Shows a set of sample images as a reference
+- Chooses a random image from another set of images
+- Asks the user to predict the variety
+- Predicts the variety by sending a request to the gateway
+- Shows the winner and overall result
+
+In order to run this app:
+- In a new bash, Go to `/sources/production/front-end/`
+- Run `pipenv install` and `pipenv shell` to activate the environment
+- Run `streamlit run client.py`
+- Go to the browser at `http://localhost:8501`
+- Follow the instructions.
+
+### Create a local Kubernetes cluster with KinD
+
+In a bash, go to `/production/k8s/kind/` and run:
 `./kind create cluster --name tf-gateway`
 Check with: 
 `kubectl cluster-info --context kind-tf-gateway`
@@ -205,17 +214,22 @@ kubectl apply -f gateway-service.yaml
 ```
 
 **Test gateway and its connection with tf-serving**  
+
+In order to access the service (load balancer) in the cluster, we will use port forwarding, since the servicehas not been assined with an IP yet.
 ```bash
-kubectl port-forward service/gateway 9000:80
+kubectl port-forward service/gateway 8080:80
 ```
-Host port 9000 is forwarding to port 80 of the gateway service where it is listening to. Actually Port 80 of service forwards to port 9000 of container, where gunicorn is listening to.  
+Host port 8080 is forwarding to port 80 of the gateway service where it is listening to. Actually Port 80 of service forwards to port 9000 of container, where gunicorn is listening to.  
 
 Test the gateway service:  
 Ensure that the production environment is activated (the one under the production/gateway folder)  
-Go to `production/tests/` folder and run  
+Go to `production/integration-tests/` folder and run  
 `python test_gateway.py`  
 
-## Performance tests
+You may with to delete the cluster with (now, or after the performance tests):  
+`./kind delete cluster tf-gateway`  
+
+### Performance tests
 
 For some reason, I have not been able to run Locust within the virtual environment made by pipenv.
 I've had to install Locust on the Anaconda environment and launch Locust from Anaconda environment (that is, not from the pipenv environment)
@@ -223,6 +237,64 @@ So if needed, use `pip install locust` in your conda environment (you may have a
 Go to `sources/production/integration_tests/` and execute `locust -H http://localhost:8080`
 Be sure to have a local ML server running, whether docker-compose of with kind as explained before.
 Then, go to `http://localhost/8089` and enter 4 users. 
+
+
+### Deploy to AWS EKS
+
+Please, note that this will have associated costs to the AWS services deployed.  
+
+Update to the latest awscli version and eksctl version.  
+
+`aws ecr create-repository --repository-name mango-repo`
+
+Get the "repository uri", for instance:  
+`546106488772.dkr.ecr.eu-west-1.amazonaws.com/mango-repo`  
+
+Tag your local images to point to the ECR repository:  
+`docker tag tf-serving-mango:v1 546106488772.dkr.ecr.eu-west-1.amazonaws.com/mango-repo:tf-serving-mango-v1`
+`docker tag gateway-mango:v1 546106488772.dkr.ecr.eu-west-1.amazonaws.com/mango-repo:gateway-mango-v1`
+
+Log into ECR with aws cli (change your account id and region accordingly):   
+`aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${var.account_id}.dkr.ecr.${var.region}.amazonaws.com`
+
+For instance:
+`aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 546106488772.dkr.ecr.eu-west-1.amazonaws.com`  
+
+Push the images:  
+`docker push 546106488772.dkr.ecr.eu-west-1.amazonaws.com/mango-repo:tf-serving-mango-v1`
+`docker push 546106488772.dkr.ecr.eu-west-1.amazonaws.com/mango-repo:gateway-mango-v1`
+
+Edit gateway-deployment.yaml and tf-serving-deployment.yaml to use these your new tagged images  
+
+`eksctl create cluster -f eks-config.yaml`
+
+kubectl will be contigured to work with eks automatically.  
+
+Apply the configurations:  
+
+```
+kubectl apply -f model-deployment.yaml
+kubectl apply -f model-service.yaml
+kubectl apply -f gateway-deployment.yaml
+kubectl apply -f gateway-service.yaml
+```
+
+Get the load balancer (service) external ip:  
+`kubectl get service`
+For instance: `a5392f8c5030f410280c2db849511f09-2136527655.eu-west-1.elb.amazonaws.com`
+Note: Wait some time for the DNS to propagate. 
+
+You may check the FastAPI by directly opening the API endpoint:  
+For instance: `http://a5392f8c5030f410280c2db849511f09-2136527655.eu-west-1.elb.amazonaws.com/docs`  
+
+Or go to /sources/production/front-end and run
+`pipenv streamlit client-py`  
+
+Introduce the url of the EKS load balancer followed by `/predict`  
+For instance, `http://a5392f8c5030f410280c2db849511f09-2136527655.eu-west-1.elb.amazonaws.com/predict`  
+
+Finally, delete the cluster:
+`eksctl delete cluster --name ml-mango-eks`
 
 ## Useful snippets
 

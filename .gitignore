@@ -2,6 +2,7 @@
 /data/Classification_dataset/
 /sources/production/front-end/data/
 /sources/development/models/
+**/tf-serving/mango-model/
 
 
 # Byte-compiled / optimized / DLL files
