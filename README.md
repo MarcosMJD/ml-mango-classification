@@ -20,10 +20,8 @@ This dataset contains images of eight varieties of Pakistani mangoes. Automated 
 - AWS EKS  
 - Locust  
 - Pytest  
-  
-<video width="640" height="480" controls>
-  <source src="./assets/demo.mp4" type="video/mp4">
-</video>  
+
+<video src='https://user-images.githubusercontent.com/74185356/208427747-35294c8f-c593-4c33-9b39-1a00deda2803.mp4'></video>
 
 ### Development Plan: 
 - Setup environment
