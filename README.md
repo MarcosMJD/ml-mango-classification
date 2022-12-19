@@ -20,8 +20,9 @@ This dataset contains images of eight varieties of Pakistani mangoes. Automated 
 - AWS EKS  
 - Locust  
 - Pytest  
+  
 <video width="640" height="480" controls>
-  <source src="./assets/demo.webm" type="video/webm">
+  <source src="./assets/demo.mp4" type="video/webm">
 </video>  
 
 ### Development Plan: 
@@ -58,7 +59,7 @@ This dataset contains images of eight varieties of Pakistani mangoes. Automated 
   - Add L1 and L2 regularization in inner layers  
   - Test with 80-10-10 folds.  
 - Production:
-  - FastAPI  
+  - Automatically get the names of the input/output from the default signature  
   - Find solution to use grpc with asyc/await (FastAPI)  
     - https://docs.python.org/3/library/asyncio-future.html  
     - https://github.com/tensorflow/serving/blob/master/tensorflow_serving/example/mnist_client.py  
@@ -78,10 +79,10 @@ Open a shell (e.g. Powershell) and execute:
 ### Download the dataset
 Go to https://www.kaggle.com/datasets/saurabhshahane/mango-varieties-classification  
 Create a Kaggle account and click Download button.  
-The zip file actually contains two datasets, each one in a subdirectories. We only need the Classification_dataset.  
+The zip file actually contains two datasets, each one in a subdirectories. We only need the Classification_dataset.   
 So unzip the folder `Classification_dataset` into the `data` folder of the repository. Like this:  
-/data/Classificacion_dataset/Anwar Ratool
-/data/Classificacion_dataset/Chanusa (Black)
+/data/Classificacion_dataset/Anwar Ratool  
+/data/Classificacion_dataset/Chanusa (Black)  
 ...
 
 ### Create the environment
@@ -141,8 +142,8 @@ Before deploying the model, it is needed to set the correct input and outputs in
 - Go to the directory `/sources/production/tf-serving`
 - Run `saved_model_cli  show --all --dir mango-model`
 - Find the line `signature_def['serving_default']:`
-- Take the name of the input. E.G. `input_44` in the `line inputs['input_44']`
-- the same for the output: `dense_37` in `outputs['dense_37']`
+- Take the name of the input. E.G. `input_2` in the `line inputs['input_2']`
+- the same for the output: `dense_1` in `outputs['dense_1']`
 Your numbers may be different.
 
 Edit `/sources/production/gateway/gateway.py` and modify `input_xx` and `dense_xx` with your numbers
