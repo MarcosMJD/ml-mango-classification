@@ -22,7 +22,7 @@ This dataset contains images of eight varieties of Pakistani mangoes. Automated 
 - Pytest  
   
 <video width="640" height="480" controls>
-  <source src="./assets/demo.mp4" type="video/webm">
+  <source src="./assets/demo.mp4" type="video/mp4">
 </video>  
 
 ### Development Plan: 
