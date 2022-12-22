@@ -42,13 +42,13 @@ This dataset contains images of eight varieties of Pakistani mangoes. Automated 
   - Model conversion to tf_lite
 - Productization -> ./production/*
   - Create tf-serving image
-  - Create gateway (flask) image
+  - Create gateway (FastAPI) image
   - Create tests for testing the images (with docker-compose)
   - Create Kubernetes yaml files (kind and EKS)
     - gateway service and deployment
     - tf-serving service and deployment
   - Create Streamlit app
-  - Performance test with Locuts
+  - Performance test with Locust
 - Documentation
 
 ### Todo: 
@@ -154,6 +154,8 @@ The best checkpoint is automatically selected and the model is converted into sa
 
 ## 2.- Production:
 
+![mango deployment](/assets/mango-deployment.jpg)
+
 ### Build the images:
 Go to /sources/production/tf-serving/ and run:  
 `docker build -t tf-serving-mango:v1 .`
@@ -194,15 +196,15 @@ In order to run this app:
 - Go to the browser at `http://localhost:8501`
 - Follow the instructions.
 
-### Create a local Kubernetes cluster with KinD
+### Create a local Kubernetes cluster with KinD  
 
-In a bash, go to `/production/k8s/kind/` and run:
-`./kind create cluster --name tf-gateway`
-Check with: 
-`kubectl cluster-info --context kind-tf-gateway`
+In a bash, go to `/production/k8s/kind/` and run:  
+`./kind create cluster --name tf-gateway`  
+Check with:  
+`kubectl cluster-info --context kind-tf-gateway`  
 
-Load images to the cluster:
-`./kind load docker-image tf-serving-mango:v1 gateway-mango:v1 --name tf-gateway`
+Load images to the cluster:  
+`./kind load docker-image tf-serving-mango:v1 gateway-mango:v1 --name tf-gateway`  
 
 Create the deployments and services:  
 ```
@@ -230,11 +232,11 @@ You may with to delete the cluster with (now, or after the performance tests):
 
 ### Performance tests
 
-For some reason, I have not been able to run Locust within the virtual environment made by pipenv.
-I've had to install Locust on the Anaconda environment and launch Locust from Anaconda environment (that is, not from the pipenv environment)
-So if needed, use `pip install locust` in your conda environment (you may have already created one for this project)
-Go to `sources/production/integration_tests/` and execute `locust -H http://localhost:8080`
-Be sure to have a local ML server running, whether docker-compose of with kind as explained before.
+For some reason, I have not been able to run Locust within the virtual environment made by pipenv.  
+I've had to install Locust on the Anaconda environment and launch Locust from Anaconda environment (that is, not from the pipenv environment)  
+So if needed, use `pip install locust` in your conda environment (you may have already created one for this project)  
+Go to `sources/production/integration_tests/` and execute `locust -H http://localhost:8080`  
+Be sure to have a local ML server running, whether docker-compose of with kind as explained before.  
 Then, go to `http://localhost/8089` and enter 4 users. 
 
 
@@ -310,13 +312,13 @@ Note: There should be one which is the control plane
 winpty docker exec -ti <<cluster-name>-control-plane> bash
 crictl  images
 ```
-**Delete cluster** 
+**Delete cluster**  
 kind delete cluster --name <name>  
 
-**Log in (bash) into a running container**  
+**Log in (bash) into a running container**   
 `winpty docker exec -it <container-id> bash`
 
-**Load and send image via post with requests**
+**Load and send image via post with requests**  
 ```
 import requests
 url = 'http://..."
@@ -324,36 +326,36 @@ files = {'media': open('test.jpg', 'rb')}
 requests.post(url, files=files)
 ```
 
-**Get image in Flask via POST**
+**Get image in Flask via POST**  
 ```
 imagefile = flask.request.files.get('imagefile', '')
 ```
 
-**Convert image file from Flask to PIL**
+**Convert image file from Flask to PIL**  
 `pil_image = Image.open(image)`
 
-**To get the class of the highest prediction**  
+**To get the class of the highest prediction**    
 `np.array(classes)[np.argmax(preds,1)]`  
 
-**To evaluate a model with a dataset**
-X can be a keras iterator obtained from keras image data generator -> from dataframe or directory. It returns loss and metric defined in the model compilation.
-`model.evaluate(X)`
+**To evaluate a model with a dataset**  
+X can be a keras iterator obtained from keras image data generator -> from dataframe or directory. It returns loss and metric defined in the model compilation.  
+`model.evaluate(X)`  
 
-**Show debug messages with docker-compose**
-`print('debug', flush=True)`
+**Show debug messages with docker-compose**  
+`print('debug', flush=True)`  
 
-**Delete a commit**
-git reset --hard <commit-id>
+**Delete a commit**  
+git reset --hard <commit-id>  
 
-**Delete a file in the last commit**
-git reset --soft HEAD~1
+**Delete a file in the last commit**  
+`git reset --soft HEAD~1`
 (the files will be in the staged area where they can be removed or unstaged)
-git rm --cached <file>
+`git rm --cached <file>`
 
-**Install Gunicorn and Uvicorn for multiprocess with FastAPI**
-`pip install "uvicorn[standard]" gunicorn`
+**Install Gunicorn and Uvicorn for multiprocess with FastAPI**  
+`pip install "uvicorn[standard]" gunicorn`  
 
-**Run Gunicorn within a docker container with several Uvicorn workers (Linux only)**
+**Run Gunicorn within a docker container with several Uvicorn workers (Linux only)**  
 ```
 ENTRYPOINT [ "gunicorn", "gateway:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker",   "--bind=0.0.0.0:9000"]
 ```
@@ -364,13 +366,13 @@ ENTRYPOINT [ "gunicorn", "gateway:app", "--workers=4", "--worker-class=uvicorn.w
 On Windows 0.0.0.0 will launch the server, but clients using 0.0.0.0 or 127.0.0.1 or localhost will not work.  
 On Windows, port 9000 is denied (permissions).  
 
-**Send image with curl in multipart form data format**
+**Send image with curl in multipart form data format**  
  `curl -X 'POST'   'http://localhost:8000/predict'   -H 'accept: application/json'   -H 'Content-Type: multipart/form-data'   -F 'file=@IMG_20210630_102920.jpg;type=image/jpeg'`
 
-**Get the key with the max value in a dict**
+**Get the key with the max value in a dict**  
 `print(max(x, key=x.get))`
 
-**Example of simple makefile**
+**Example of simple makefile**  
 ```
 deps:
 	poetry install
